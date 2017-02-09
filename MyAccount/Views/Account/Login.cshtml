@@ -5,15 +5,28 @@
 
 <h2>Connection</h2>
 
+
+
 @using (Html.BeginForm()) {
     <table align="center">
         <tr>
+            <td colspan="2">
+                @Html.ValidationMessage("error")
+            </td>
+        </tr>
+        <tr>
             <td>Login : </td>
-            <td>@Html.TextBox("login")</td>
+            <td>
+                @Html.TextBox("login")
+                @Html.ValidationMessage("login")
+            </td>
         </tr>
         <tr>
             <td>Password : </td>
-            <td>@Html.Password("password")</td>
+            <td>
+                @Html.Password("password")
+                @Html.ValidationMessage("password")
+            </td>
         </tr>
         <tr>
             <th colspan="2">

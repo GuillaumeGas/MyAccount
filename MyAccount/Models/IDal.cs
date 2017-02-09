@@ -8,7 +8,7 @@ namespace MyAccount.Models
 {
     public interface IDal : IDisposable
     {
-        List<user> getUsers();
+        List<user> getUsers();  
         user getUser(string login);
         user getUser(int id);
         user authentication(string login, string password);

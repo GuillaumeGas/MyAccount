@@ -42,7 +42,7 @@ namespace MyAccount.Controllers
                     }
                     return Redirect("~/Home");
                 }
-                ModelState.AddModelError("User.login", "Login error !");
+                ModelState.AddModelError("error", "Login error !");
             }
             return View();
         }
@@ -63,7 +63,7 @@ namespace MyAccount.Controllers
                     FormsAuthentication.SetAuthCookie(u.id.ToString(), false);
                     return Redirect("~/Home");
                 }
-                ModelState.AddModelError("User.login", "This username is already used !");
+                ModelState.AddModelError("error", "This username is already used !");
             }
             return View();
         }
