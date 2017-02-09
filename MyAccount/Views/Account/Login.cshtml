@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Connection</h2>
+
+@using (Html.BeginForm()) {
+    <table align="center">
+        <tr>
+            <td>Login : </td>
+            <td>@Html.TextBox("login")</td>
+        </tr>
+        <tr>
+            <td>Password : </td>
+            <td>@Html.Password("password")</td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input type="submit" value="Ok"/>
+            </th>
+        </tr>
+        <tr>
+            <th>
+                @Html.ActionLink("Sign up", "Signup")
+            </th>
+        </tr>
+    </table>
+}
