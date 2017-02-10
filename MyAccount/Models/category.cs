@@ -14,5 +14,8 @@ namespace MyAccount.Models
         [Required]
         [StringLength(255)]
         public string name { get; set; }
+
+        [Required]
+        public int user_id { get; set;  }
     }
 }

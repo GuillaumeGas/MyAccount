@@ -28,5 +28,15 @@ namespace MyAccount.Models
         account setAccount(int account_id, int user_id, string name, float value);
         void deleteAccount(int id);
         void deleteAccount(int user_id, string name);
+
+        List<category> getCategories();
+        List<category> getCategories(int user_id);  
+        category getCategory(int id);
+        category getCategory(int user_id, string name);
+        category addCategory(int user_id, string name);
+        category addCategory(category cat);
+        category setCategory(int category_id, int user_id, string name);
+        void deleteCategory(int id);
+        void deleteCategory(int user_id, string name);
     }
 }

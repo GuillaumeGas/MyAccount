@@ -131,8 +131,7 @@ namespace MyAccount.Models
 
         public account addAccount(account ac)
         {
-            account new_account = new account { name = ac.name, id_user = ac.id_user, value = ac.value };
-            bdd.account.Add(new_account);
+            account new_account = bdd.account.Add(new account { name = ac.name, id_user = ac.id_user, value = ac.value });
             bdd.SaveChanges();
             return new_account;
         }
@@ -170,9 +169,77 @@ namespace MyAccount.Models
             }
         }
 
+        public List<category> getCategories ()
+        {
+            return bdd.category.ToList();
+        }
+ 
+        public List<category> getCategories(int user_id)
+        {
+            return bdd.category.Where(c => c.user_id == user_id).ToList();
+        }
+
+        public category getCategory (int id)
+        {
+            return bdd.category.FirstOrDefault(c => c.id == id);
+        }
+
+        public category getCategory (int user_id, string name)
+        {
+            return bdd.category.FirstOrDefault(c => c.user_id == user_id && c.name == name);
+        }
+
+        public category addCategory (int user_id, string name)
+        {
+            category cat = bdd.category.Add(new category { user_id = user_id, name = name });
+            bdd.SaveChanges();
+            return cat;
+        }
+
+        public category addCategory (category cat)
+        {
+            category res = bdd.category.Add(new category { user_id = cat.user_id, name = cat.name });
+            bdd.SaveChanges();
+            return res;
+        }
+
+        public category setCategory (int category_id, int user_id, string name)
+        {
+            category cat = bdd.category.FirstOrDefault(c => c.id == category_id);
+            if (cat != null)
+            {
+                cat.user_id = user_id;
+                cat.name = name;
+                bdd.SaveChanges();
+            }
+            return cat;
+        }
+
+        public void deleteCategory(int id)
+        {
+            category cat = bdd.category.FirstOrDefault(c => c.id == id);
+            if (cat != null)
+            {
+                bdd.category.Remove(cat);
+                bdd.SaveChanges();
+            }
+        }
+
+        public void deleteCategory (int user_id, string name)
+        {
+            category cat = bdd.category.FirstOrDefault(c => c.user_id == user_id && c.name == name);
+            if (cat != null)
+            {
+                bdd.category.Remove(cat);
+                bdd.SaveChanges();
+            }
+        }
+
+
         public void Dispose()
         {
             bdd.Dispose();
         }
     }
 }
+ 
