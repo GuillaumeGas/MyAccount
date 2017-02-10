@@ -7,7 +7,7 @@ using System.Data.Entity;
 namespace MyAccount.Tests
 {
     [TestClass]
-    public class DalTests
+    public class DalUserTests
     {
         private IDal dal;
 
@@ -15,6 +15,12 @@ namespace MyAccount.Tests
         public void init()
         {
             dal = new Dal();
+
+            List<user> users = dal.getUsers();
+            foreach (var u in users)
+            {
+                dal.deleteUser(u.id);
+            }
         }
 
         [TestCleanup]
@@ -127,6 +133,7 @@ namespace MyAccount.Tests
         {
             user u = dal.addUser("test", "testparam");
             dal.deleteUser(u.id);
+            dal.deleteUser("test");
             Assert.AreEqual(null, dal.getUser(u.id));
         }
 
@@ -135,6 +142,7 @@ namespace MyAccount.Tests
         {
             user u = dal.addUser("test", "testparam");
             dal.deleteUser(u.login);
+            dal.deleteUser("test");
             Assert.AreEqual(null, dal.getUser(u.id));
         }
     }

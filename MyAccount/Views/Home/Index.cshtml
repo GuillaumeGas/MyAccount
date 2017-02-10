@@ -7,3 +7,14 @@
 
 @Html.ActionLink("Logout", "Signout", "Account")
 
+<table align="center">
+    @{ 
+        foreach (var account in ViewBag.AccountsList)
+        {
+            <tr>
+                <td>@account.name</td>
+                <td>@account.value</td>
+            </tr>
+        }
+    }
+</table>

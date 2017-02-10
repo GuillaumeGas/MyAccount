@@ -35,6 +35,7 @@ namespace MyAccount.Controllers
                 user u = dal.authentication(usr.login, usr.password);
                 if (u != null)
                 {
+                    Session["user"] = u;
                     FormsAuthentication.SetAuthCookie(u.id.ToString(), false);
                     if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
@@ -60,6 +61,7 @@ namespace MyAccount.Controllers
                 user u = dal.addUser(usr);
                 if (u != null)
                 {
+                    Session["user"] = u;
                     FormsAuthentication.SetAuthCookie(u.id.ToString(), false);
                     return Redirect("~/Home");
                 }

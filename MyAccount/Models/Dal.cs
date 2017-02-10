@@ -61,7 +61,7 @@ namespace MyAccount.Models
             }
         }
 
-        public void setUser(int id, string login, string pass)
+        public user setUser(int id, string login, string pass)
         {
             user usr = bdd.user.Find(id);
             if (usr != null)
@@ -70,18 +70,104 @@ namespace MyAccount.Models
                 usr.password = pass;
                 bdd.SaveChanges();
             }
+            return usr;
         }
 
         public void deleteUser(int id)
         {
-            bdd.user.Remove(bdd.user.Find(id));
-            bdd.SaveChanges();
+            user usr = bdd.user.Find(id);
+            if (usr != null)
+            {
+                bdd.user.Remove(usr);
+                bdd.SaveChanges();
+            }
         }
 
         public void deleteUser(string login)
         {
-            bdd.user.Remove(bdd.user.FirstOrDefault(u => u.login == login));
+            user usr = bdd.user.FirstOrDefault(u => u.login == login);
+            if (usr != null)
+            {
+                bdd.user.Remove(usr);
+                bdd.SaveChanges();
+            }
+        }
+
+        public List<account> getAccounts()
+        {
+            return bdd.account.ToList();
+        }
+
+        public List<account> getAccounts(int user_id)
+        {
+            return bdd.account.Where(a => a.id_user == user_id).ToList();
+        }
+
+        public account getAccount(int id)
+        {
+            return bdd.account.FirstOrDefault(a => a.id == id);
+        }
+
+        public account getAccount(int user_id, string name)
+        {
+            return bdd.account.FirstOrDefault(a => a.name == name && a.id_user == user_id);
+        }
+
+        public account addAccount(int user_id, string name)
+        {
+            account new_account = new account { name = name, id_user = user_id, value = 0 };
+            bdd.account.Add(new_account);
             bdd.SaveChanges();
+            return new_account;
+        }
+
+        public account addAccount(int user_id, string name, float value)
+        {
+            account new_account = new account { name = name, id_user = user_id, value = value };
+            bdd.account.Add(new_account);
+            bdd.SaveChanges();
+            return new_account;
+        }
+
+        public account addAccount(account ac)
+        {
+            account new_account = new account { name = ac.name, id_user = ac.id_user, value = ac.value };
+            bdd.account.Add(new_account);
+            bdd.SaveChanges();
+            return new_account;
+        }
+
+        public account setAccount(int account_id, int user_id, string name, float value)
+        {
+            account ac = bdd.account.FirstOrDefault(a => a.id == account_id);
+            if (ac != null)
+            {
+                ac.id_user = user_id;
+                ac.name = name;
+                ac.value = value;
+                bdd.SaveChanges();
+            }
+            return ac;
+        }
+
+        public void deleteAccount (int id)
+        {
+            account ac = bdd.account.FirstOrDefault(a => a.id == id);
+            if (ac != null)
+            {
+                bdd.account.Remove(ac);
+                bdd.SaveChanges();
+            }
+        }
+
+        public void deleteAccount(int user_id, string name)
+        {
+            account ac = bdd.account.FirstOrDefault(a => a.id_user == user_id && a.name == name);
+            if (ac != null)
+            {
+                bdd.account.Remove(ac);
+                bdd.SaveChanges();
+            }
         }
 
         public void Dispose()
