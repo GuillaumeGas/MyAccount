@@ -8,6 +8,9 @@
 @Html.ActionLink("Logout", "Signout", "Account")
 
 <table align="center">
+    <tr>
+        <th colspan="2">Accounts</th>
+    </tr>
     @{ 
         foreach (var account in ViewBag.AccountsList)
         {
@@ -17,4 +20,19 @@
             </tr>
         }
     }
+</table>
+
+<table align="center">
+   <tr>
+       <th colspan="2">Transactions</th>
+   </tr>
+    @{
+        foreach (var transaction in ViewBag.TransactionsList)
+        {
+            <tr>
+                <td>@transaction.name</td>
+                <td>@transaction.value</td>
+            </tr>
+        }
+     }
 </table>

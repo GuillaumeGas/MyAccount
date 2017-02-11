@@ -20,7 +20,7 @@ namespace MyAccount.Controllers
 
         public ActionResult Login ()
         {
-            if (HttpContext.User.Identity.IsAuthenticated)
+            if (HttpContext.User.Identity.IsAuthenticated && Session["user"] != null)
             {
                 return Redirect("~/Home");
             }
