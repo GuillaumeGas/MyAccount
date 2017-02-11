@@ -9,17 +9,16 @@
 
 <table align="center">
     <tr>
-        <th colspan="2">Accounts</th>
+        <th>Accounts</th>
     </tr>
-    @{ 
-        foreach (var account in ViewBag.AccountsList)
-        {
-            <tr>
-                <td>@account.name</td>
-                <td>@account.value</td>
-            </tr>
-        }
-    }
+    <tr>
+        <td>
+            @using (Html.BeginForm())
+            {
+                @Html.DropDownList("account_id", (SelectList)ViewBag.AccountsList, new { onchange = "$(this.form).submit ();" })
+            }
+        </td>
+    </tr>
 </table>
 
 <table align="center">

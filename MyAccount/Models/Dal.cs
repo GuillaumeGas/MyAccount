@@ -255,6 +255,21 @@ namespace MyAccount.Models
             return bdd.transaction.Where(t => t.id_account == account_id && t.name.Contains(name)).ToList();
         }
 
+        public List<transaction> getInvalidatedTransactions (int account_id)
+        {
+            return bdd.transaction.Where(t => t.id_account == account_id && t.validated == false).ToList();
+        }
+
+        public List<transaction> getInvalidatedTransactions(int account_id, DateTime date_begin)
+        {
+            return bdd.transaction.Where(t => t.id_account == account_id && t.validated == false && t.date >= date_begin).ToList();
+        }
+
+        public List<transaction> getInvalidatedTransactions(int account_id, string name)
+        {
+            return bdd.transaction.Where(t => t.id_account == account_id && t.validated == false && t.name.Contains(name)).ToList();
+        }
+
         public transaction getTransaction(int id)
         {
             return bdd.transaction.FirstOrDefault(t => t.id == id);

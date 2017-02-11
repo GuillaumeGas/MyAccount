@@ -96,6 +96,57 @@ namespace MyAccount.Tests
         }
 
         [TestMethod]
+        public void TestGetInvalidatedTransactions_int_param()
+        {
+            List<transaction> trans = dal.getInvalidatedTransactions(0);
+            Assert.AreEqual(0, trans.Count);
+            transaction t1 = dal.addTransaction(0, "test", 0, true, DateTime.Now);
+            transaction t2 = dal.addTransaction(0, "test2", 12.2f, false, DateTime.Now);
+            transaction t3 = dal.addTransaction(1, "test3", 12.2f, false, DateTime.Now);
+            trans = dal.getInvalidatedTransactions(0);
+            Assert.AreEqual(1, trans.Count);
+            Assert.AreEqual("test2", trans[0].name);
+
+            dal.deleteTransaction(t1.id);
+            dal.deleteTransaction(t2.id);
+            dal.deleteTransaction(t3.id);
+        }
+
+        [TestMethod]
+        public void TestGetInvalidatedTransactions_intdatatime_param()
+        {
+            List<transaction> trans = dal.getInvalidatedTransactions(0);
+            Assert.AreEqual(0, trans.Count);
+            transaction t1 = dal.addTransaction(0, "test", 0, true, DateTime.Now);
+            transaction t2 = dal.addTransaction(0, "test2", 12.2f, false, new DateTime(2017, 04, 04));
+            transaction t3 = dal.addTransaction(0, "test3", 12.2f, false, new DateTime(2017, 01, 01));
+            trans = dal.getInvalidatedTransactions(0, DateTime.Now);
+            Assert.AreEqual(1, trans.Count);
+            Assert.AreEqual("test2", trans[0].name);
+
+            dal.deleteTransaction(t1.id);
+            dal.deleteTransaction(t2.id);
+            dal.deleteTransaction(t3.id);
+        }
+
+        [TestMethod]
+        public void TestGetInvalidatedTransactions_intstring_param()
+        {
+            List<transaction> trans = dal.getInvalidatedTransactions(0);
+            Assert.AreEqual(0, trans.Count);
+            transaction t1 = dal.addTransaction(0, "test", 0, true, DateTime.Now);
+            transaction t2 = dal.addTransaction(0, "test2", 12.2f, false, DateTime.Now);
+            transaction t3 = dal.addTransaction(0, "bidule", 12.2f, false, DateTime.Now);
+            trans = dal.getInvalidatedTransactions(0, "test");
+            Assert.AreEqual(1, trans.Count);
+            Assert.AreEqual("test2", trans[0].name);
+
+            dal.deleteTransaction(t1.id);
+            dal.deleteTransaction(t2.id);
+            dal.deleteTransaction(t3.id);
+        }
+
+        [TestMethod]
         public void TestGetTransaction()
         {
             transaction t1 = dal.addTransaction(0, "test", 0, false, DateTime.Now);

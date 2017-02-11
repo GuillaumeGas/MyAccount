@@ -25,7 +25,7 @@ namespace MyAccount.Controllers
         public ActionResult Index()
         {
             user u = Session["user"] as user;
-            ViewBag.AccountsList = dal.getAccounts(u.id);
+            ViewBag.AccountsList = new SelectList(dal.getAccounts(u.id), "id", "name");
 
             DateTime current_date = DateTime.Now;
             DateTime begin_date = new DateTime(current_date.Year, current_date.Month, 1);
@@ -39,10 +39,19 @@ namespace MyAccount.Controllers
 
             return View();
         }
-
-        public ActionResult Test ()
+        
+        [HttpPost]
+        public ActionResult Index(int account_id)
         {
-            return View("Test");
+            user u = Session["user"] as user;
+            ViewBag.AccountsList = new SelectList(dal.getAccounts(u.id), "id", "name");
+
+            DateTime current_date = DateTime.Now;
+            DateTime begin_date = new DateTime(current_date.Year, current_date.Month, 1);
+
+            ViewBag.TransactionsList = dal.getTransactions(account_id, begin_date);
+
+            return View();
         }
     }
 }
