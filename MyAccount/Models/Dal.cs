@@ -235,6 +235,72 @@ namespace MyAccount.Models
             }
         }
 
+        public List<transaction> getTransactions ()
+        {
+            return bdd.transaction.ToList();
+        }
+
+        public List<transaction> getTransactions(int account_id)
+        {
+            return bdd.transaction.Where(t => t.id_account == account_id).ToList();
+        }
+
+        public List<transaction> getTransactions(int account_id, DateTime date)
+        {
+            return bdd.transaction.Where(t => t.id_account == account_id && t.date >= date).ToList();
+        }
+
+        public List<transaction> getTransactions(int account_id, string name)
+        {
+            return bdd.transaction.Where(t => t.id_account == account_id && t.name.Contains(name)).ToList();
+        }
+
+        public transaction getTransaction(int id)
+        {
+            return bdd.transaction.FirstOrDefault(t => t.id == id);
+        }
+
+        public transaction addTransaction(int account_id, string name, float value, bool validated, DateTime date)
+        {
+            transaction t = bdd.transaction.Add (new transaction { id_account = account_id, name = name, value = value, validated = validated, date = date });
+            bdd.SaveChanges();
+            return t;
+        }
+
+        public transaction addTransaction(transaction t)
+        {
+            transaction transac = bdd.transaction.Add(new transaction { id_account = t.id_account, name = t.name, value = t.value, validated = t.validated, date = t.date });
+            bdd.SaveChanges();
+            return transac;
+        }
+
+        public transaction setTransaction(int transaction_id, int account_id, string name, float value, bool validated, DateTime date) {
+            transaction transac = bdd.transaction.FirstOrDefault(t => t.id == transaction_id);
+            if (transac != null)
+            {
+                transac.id_account = account_id;
+                transac.name = name;
+                transac.value = value;
+                transac.validated = validated;
+                transac.date = date;
+                bdd.SaveChanges();
+            }
+            return transac;
+        }
+
+        public void deleteTransaction(int id)
+        {
+            transaction transac = bdd.transaction.FirstOrDefault(t => t.id == id);
+            if (transac != null)
+            {
+                bdd.transaction.Remove(transac);
+                bdd.SaveChanges();
+            }
+        }
+
+        /*
+        void deleteTransaction(int id);
+         * */
 
         public void Dispose()
         {

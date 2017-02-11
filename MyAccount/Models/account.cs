@@ -17,6 +17,7 @@ namespace MyAccount.Models
 
         public float value { get; set; }
 
+        [Required]
         public int? id_user { get; set; }
     }
 }

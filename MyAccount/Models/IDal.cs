@@ -38,5 +38,15 @@ namespace MyAccount.Models
         category setCategory(int category_id, int user_id, string name);
         void deleteCategory(int id);
         void deleteCategory(int user_id, string name);
+
+        List<transaction> getTransactions();
+        List<transaction> getTransactions(int account_id);
+        List<transaction> getTransactions(int account_id, DateTime date);
+        List<transaction> getTransactions(int account_id, string name);
+        transaction getTransaction(int id);
+        transaction addTransaction(int account_id, string name, float value, bool validated, DateTime date);
+        transaction addTransaction(transaction t);
+        transaction setTransaction(int transaction_id, int account_id, string name, float value, bool validated, DateTime date);
+        void deleteTransaction(int id);
     }
 }

@@ -15,10 +15,18 @@ namespace MyAccount.Models
         [StringLength(255)]
         public string name { get; set; }
 
+        [Required]
+        public float value { get; set; }
+
         public bool validated { get; set; }
 
-        public int? id_category { get; set; }
+        [Required]
+        public int id_category { get; set; }
 
-        public int? id_account { get; set; }
+        [Required]
+        public int id_account { get; set; }
+
+        [Required]
+        public DateTime date { get; set; }
     }
 }
