@@ -12,12 +12,10 @@ namespace MyAccount.Controllers
     {
 
         private IDal dal;
-        private User user;
-
+       
         public HomeController ()
         {
             dal = new Dal();
-            user = Session["user"] as User;
         }
 
         /*
