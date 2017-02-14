@@ -28,14 +28,14 @@ namespace MyAccount.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login (user usr, string returnUrl)
+        public ActionResult Login (User usr, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                user u = dal.authentication(usr.login, usr.password);
+                User u = dal.authentication(usr.login, usr.password);
                 if (u != null)
                 {
-                    Session["user"] = u;
+                    Session["User"] = u;
                     FormsAuthentication.SetAuthCookie(u.id.ToString(), false);
                     if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
                     {
@@ -54,14 +54,14 @@ namespace MyAccount.Controllers
         }
 
         [HttpPost]
-        public ActionResult Signup (user usr)
+        public ActionResult Signup (User usr)
         {
             if (ModelState.IsValid)
             {
-                user u = dal.addUser(usr);
+                User u = dal.addUser(usr);
                 if (u != null)
                 {
-                    Session["user"] = u;
+                    Session["User"] = u;
                     FormsAuthentication.SetAuthCookie(u.id.ToString(), false);
                     return Redirect("~/Home");
                 }

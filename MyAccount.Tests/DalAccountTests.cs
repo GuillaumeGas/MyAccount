@@ -15,7 +15,7 @@ namespace MyAccount.Tests
         {
             dal = new Dal();
 
-            List<account> accounts = dal.getAccounts();
+            List<Account> accounts = dal.getAccounts();
             foreach (var a in accounts)
             {
                 dal.deleteAccount(a.id);
@@ -31,7 +31,7 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestGetAccounts()
         {
-            List<account> accounts = dal.getAccounts();
+            List<Account> accounts = dal.getAccounts();
             Assert.AreEqual(0, accounts.Count);
             dal.addAccount(0, "test");
             dal.addAccount(0, "test2");
@@ -46,7 +46,7 @@ namespace MyAccount.Tests
         public void TestGetAccounts_int_param ()
         {
             dal.addAccount(0, "test");
-            List<account> accounts = dal.getAccounts(1);
+            List<Account> accounts = dal.getAccounts(1);
             Assert.AreEqual(0, accounts.Count);
             dal.addAccount(1, "test1");
             accounts = dal.getAccounts(1);
@@ -59,9 +59,9 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestGetAccount_int_param()
         {
-            account a1 = dal.addAccount(0, "test");
-            account a2 = dal.addAccount(1, "test2");
-            account a = dal.getAccount(a1.id);
+            Account a1 = dal.addAccount(0, "test");
+            Account a2 = dal.addAccount(1, "test2");
+            Account a = dal.getAccount(a1.id);
             Assert.AreNotEqual(null, a);
             Assert.AreEqual("test", a.name);
 
@@ -72,7 +72,7 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestGetAccount_intstring()
         {
-            account a = dal.getAccount(0, "test");
+            Account a = dal.getAccount(0, "test");
             Assert.AreEqual(null, a);
             dal.addAccount(0, "test");
             dal.addAccount(1, "test2");
@@ -87,7 +87,7 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestAddAccount_intstring()
         {
-            List<account> accounts = dal.getAccounts();
+            List<Account> accounts = dal.getAccounts();
             Assert.AreEqual(0, accounts.Count);
             dal.addAccount(0, "test");
             dal.addAccount(0, "test2");
@@ -101,13 +101,13 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestAddAccount_intstringfloat()
         {
-            List<account> accounts = dal.getAccounts();
+            List<Account> accounts = dal.getAccounts();
             Assert.AreEqual(0, accounts.Count);
             dal.addAccount(0, "test", 10.2f);
             dal.addAccount(0, "test2", 12.4f);
             accounts = dal.getAccounts();
             Assert.AreEqual(2, accounts.Count);
-            account ac = dal.getAccount(0, "test");
+            Account ac = dal.getAccount(0, "test");
             Assert.AreEqual(10.2f, ac.value);
 
             dal.deleteAccount(0, "test");
@@ -117,13 +117,13 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestAddAccount_account()
         {
-            List<account> accounts = dal.getAccounts();
+            List<Account> accounts = dal.getAccounts();
             Assert.AreEqual(0, accounts.Count);
-            dal.addAccount(new account { name = "test", id_user = 0, value = 10.2f });
-            dal.addAccount(new account { name = "test2", id_user = 1, value = 5.3f });
+            dal.addAccount(new Account { name = "test", user_id = 0, value = 10.2f });
+            dal.addAccount(new Account { name = "test2", user_id = 1, value = 5.3f });
             accounts = dal.getAccounts();
             Assert.AreEqual(2, accounts.Count);
-            account ac = dal.getAccount(0, "test");
+            Account ac = dal.getAccount(0, "test");
             Assert.AreEqual(10.2f, ac.value);
 
             dal.deleteAccount(0, "test");
@@ -133,8 +133,8 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestSetAccount ()
         {
-            account ac = dal.addAccount(0, "test", 10.2f);
-            account ac_updated = dal.setAccount(ac.id, 0, "test2", 2.3f);
+            Account ac = dal.addAccount(0, "test", 10.2f);
+            Account ac_updated = dal.setAccount(ac.id, 0, "test2", 2.3f);
             Assert.AreEqual("test2", ac_updated.name);
             Assert.AreEqual(2.3f, ac_updated.value);
 
@@ -144,7 +144,7 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestDeleteAccount_int()
         {
-            account ac = dal.addAccount(0, "test");
+            Account ac = dal.addAccount(0, "test");
             Assert.AreEqual(1, dal.getAccounts().Count);
             dal.deleteAccount(ac.id);
             Assert.AreEqual(0, dal.getAccounts().Count);
@@ -153,7 +153,7 @@ namespace MyAccount.Tests
         [TestMethod]
         public void TestDeleteAccount_intstring()
         {
-            account ac = dal.addAccount(0, "test");
+            Account ac = dal.addAccount(0, "test");
             Assert.AreEqual(1, dal.getAccounts().Count);
             dal.deleteAccount(0, "test");
             Assert.AreEqual(0, dal.getAccounts().Count);

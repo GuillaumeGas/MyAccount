@@ -5,37 +5,37 @@ namespace MyAccount.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class BddContext : DbContext
+    public partial class Entities : DbContext
     {
-        public BddContext()
-            : base("name=DbContext")
+        public Entities()
+            : base("name=Entities")
         {
         }
 
-        public virtual DbSet<account> account { get; set; }
-        public virtual DbSet<category> category { get; set; }
-        public virtual DbSet<transaction> transaction { get; set; }
-        public virtual DbSet<user> user { get; set; }
+        public virtual DbSet<Account> Account { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<Transaction> Transaction { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<account>()
+            modelBuilder.Entity<Account>()
                 .Property(e => e.name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<category>()
+            modelBuilder.Entity<Category>()
                 .Property(e => e.name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<transaction>()
+            modelBuilder.Entity<Transaction>()
                 .Property(e => e.name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<user>()
+            modelBuilder.Entity<User>()
                 .Property(e => e.login)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<user>()
+            modelBuilder.Entity<User>()
                 .Property(e => e.password)
                 .IsUnicode(false);
         }

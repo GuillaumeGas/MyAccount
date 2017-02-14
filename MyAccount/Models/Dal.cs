@@ -8,38 +8,51 @@ namespace MyAccount.Models
 {
     public class Dal : IDal
     {
-        private BddContext bdd;
+        private Entities bdd;
+
+        public enum TransacFilter
+        {
+            ALL,
+            VALIDATED,
+            INVALIDATED
+        }
 
         public Dal()
         {
-            bdd = new BddContext();
+            bdd = new Entities();
         }
 
-        public List<user> getUsers()
+        public void Dispose()
         {
-            return bdd.user.ToList();
+            bdd.Dispose();
         }
 
-        public user getUser(string login)
+        #region User
+        public List<User> getUsers()
         {
-            return bdd.user.FirstOrDefault(u => u.login == login);
+            return bdd.User.ToList();
         }
 
-        public user getUser (int id)
+        public User getUser(string login)
         {
-            return bdd.user.Find(id);
+            return bdd.User.FirstOrDefault(u => u.login == login);
         }
 
-        public user authentication (string login, string password)
+        public User getUser (int id)
         {
-            return bdd.user.FirstOrDefault(u => u.login == login && u.password == password);
+            return bdd.User.Find(id);
         }
 
-        public user addUser(string login_value, string pass_value)
+        public User authentication (string login, string password)
+        {
+            return bdd.User.FirstOrDefault(u => u.login == login && u.password == password);
+        }
+
+        public User addUser(string login_value, string pass_value)
         {
             try
             {
-                user usr = bdd.user.Add(new user { login = login_value, password = pass_value });
+                User usr = bdd.User.Add(new User { login = login_value, password = pass_value });
                 bdd.SaveChanges();
                 return usr;
             } catch (DbUpdateException e)
@@ -48,11 +61,11 @@ namespace MyAccount.Models
             }
         }
 
-        public user addUser(user usr)
+        public User addUser(User usr)
         {
             try
             {
-                user u = bdd.user.Add(new user { login = usr.login, password = usr.password });
+                User u = bdd.User.Add(new User { login = usr.login, password = usr.password });
                 bdd.SaveChanges();
                 return u;
             } catch (DbUpdateException e)
@@ -61,9 +74,9 @@ namespace MyAccount.Models
             }
         }
 
-        public user setUser(int id, string login, string pass)
+        public User setUser(int id, string login, string pass)
         {
-            user usr = bdd.user.Find(id);
+            User usr = bdd.User.Find(id);
             if (usr != null)
             {
                 usr.login = login;
@@ -75,73 +88,75 @@ namespace MyAccount.Models
 
         public void deleteUser(int id)
         {
-            user usr = bdd.user.Find(id);
+            User usr = bdd.User.Find(id);
             if (usr != null)
             {
-                bdd.user.Remove(usr);
+                bdd.User.Remove(usr);
                 bdd.SaveChanges();
             }
         }
 
         public void deleteUser(string login)
         {
-            user usr = bdd.user.FirstOrDefault(u => u.login == login);
+            User usr = bdd.User.FirstOrDefault(u => u.login == login);
             if (usr != null)
             {
-                bdd.user.Remove(usr);
+                bdd.User.Remove(usr);
                 bdd.SaveChanges();
             }
         }
+        #endregion
 
-        public List<account> getAccounts()
+        #region Account
+        public List<Account> getAccounts()
         {
-            return bdd.account.ToList();
+            return bdd.Account.ToList();
         }
 
-        public List<account> getAccounts(int user_id)
+        public List<Account> getAccounts(int user_id)
         {
-            return bdd.account.Where(a => a.id_user == user_id).ToList();
+            return bdd.Account.Where(a => a.user_id == user_id).ToList();
         }
 
-        public account getAccount(int id)
+        public Account getAccount(int id)
         {
-            return bdd.account.FirstOrDefault(a => a.id == id);
+            return bdd.Account.FirstOrDefault(a => a.id == id);
         }
 
-        public account getAccount(int user_id, string name)
+        public Account getAccount(int user_id, string name)
         {
-            return bdd.account.FirstOrDefault(a => a.name == name && a.id_user == user_id);
+            return bdd.Account.FirstOrDefault(a => a.name == name && a.user_id == user_id);
         }
 
-        public account addAccount(int user_id, string name)
+        public Account addAccount(int user_id, string name)
         {
-            account new_account = new account { name = name, id_user = user_id, value = 0 };
-            bdd.account.Add(new_account);
+            Account new_Account = new Account { name = name, user_id = user_id, value = 0 };
+            bdd.Account.Add(new_Account);
             bdd.SaveChanges();
-            return new_account;
+            return new_Account;
         }
 
-        public account addAccount(int user_id, string name, float value)
+        public Account addAccount(int user_id, string name, float value)
         {
-            account new_account = new account { name = name, id_user = user_id, value = value };
-            bdd.account.Add(new_account);
+            Account new_Account = new Account { name = name, user_id = user_id, value = value };
+            bdd.Account.Add(new_Account);
             bdd.SaveChanges();
-            return new_account;
+            return new_Account;
         }
 
-        public account addAccount(account ac)
+        public Account addAccount(Account ac)
         {
-            account new_account = bdd.account.Add(new account { name = ac.name, id_user = ac.id_user, value = ac.value });
+            Account new_Account = bdd.Account.Add(new Account { name = ac.name, user_id = ac.user_id, value = ac.value });
             bdd.SaveChanges();
-            return new_account;
+            return new_Account;
         }
 
-        public account setAccount(int account_id, int user_id, string name, float value)
+        public Account setAccount(int Account_id, int user_id, string name, float value)
         {
-            account ac = bdd.account.FirstOrDefault(a => a.id == account_id);
+            Account ac = bdd.Account.FirstOrDefault(a => a.id == Account_id);
             if (ac != null)
             {
-                ac.id_user = user_id;
+                ac.user_id = user_id;
                 ac.name = name;
                 ac.value = value;
                 bdd.SaveChanges();
@@ -151,61 +166,63 @@ namespace MyAccount.Models
 
         public void deleteAccount (int id)
         {
-            account ac = bdd.account.FirstOrDefault(a => a.id == id);
+            Account ac = bdd.Account.FirstOrDefault(a => a.id == id);
             if (ac != null)
             {
-                bdd.account.Remove(ac);
+                bdd.Account.Remove(ac);
                 bdd.SaveChanges();
             }
         }
 
         public void deleteAccount(int user_id, string name)
         {
-            account ac = bdd.account.FirstOrDefault(a => a.id_user == user_id && a.name == name);
+            Account ac = bdd.Account.FirstOrDefault(a => a.user_id == user_id && a.name == name);
             if (ac != null)
             {
-                bdd.account.Remove(ac);
+                bdd.Account.Remove(ac);
                 bdd.SaveChanges();
             }
         }
+        #endregion
 
-        public List<category> getCategories ()
+        #region Category
+        public List<Category> getCategories ()
         {
-            return bdd.category.ToList();
+            return bdd.Category.ToList();
         }
  
-        public List<category> getCategories(int user_id)
+        public List<Category> getCategories(int user_id)
         {
-            return bdd.category.Where(c => c.user_id == user_id).ToList();
+            return bdd.Category.Where(c => c.user_id == user_id).ToList();
         }
 
-        public category getCategory (int id)
+        public Category getCategory (int id)
         {
-            return bdd.category.FirstOrDefault(c => c.id == id);
+            return bdd.Category.FirstOrDefault(c => c.id == id);
         }
 
-        public category getCategory (int user_id, string name)
+        public Category getCategory (int user_id, string name)
         {
-            return bdd.category.FirstOrDefault(c => c.user_id == user_id && c.name == name);
+            return bdd.Category.FirstOrDefault(c => c.user_id == user_id && c.name == name);
         }
 
-        public category addCategory (int user_id, string name)
+        public Category addCategory (int user_id, string name)
         {
-            category cat = bdd.category.Add(new category { user_id = user_id, name = name });
+            Category cat = bdd.Category.Add(new Category { user_id = user_id, name = name });
             bdd.SaveChanges();
             return cat;
         }
 
-        public category addCategory (category cat)
+        public Category addCategory (Category cat)
         {
-            category res = bdd.category.Add(new category { user_id = cat.user_id, name = cat.name });
+            Category res = bdd.Category.Add(new Category { user_id = cat.user_id, name = cat.name });
             bdd.SaveChanges();
             return res;
         }
 
-        public category setCategory (int category_id, int user_id, string name)
+        public Category setCategory (int Category_id, int user_id, string name)
         {
-            category cat = bdd.category.FirstOrDefault(c => c.id == category_id);
+            Category cat = bdd.Category.FirstOrDefault(c => c.id == Category_id);
             if (cat != null)
             {
                 cat.user_id = user_id;
@@ -217,83 +234,82 @@ namespace MyAccount.Models
 
         public void deleteCategory(int id)
         {
-            category cat = bdd.category.FirstOrDefault(c => c.id == id);
+            Category cat = bdd.Category.FirstOrDefault(c => c.id == id);
             if (cat != null)
             {
-                bdd.category.Remove(cat);
+                bdd.Category.Remove(cat);
                 bdd.SaveChanges();
             }
         }
 
         public void deleteCategory (int user_id, string name)
         {
-            category cat = bdd.category.FirstOrDefault(c => c.user_id == user_id && c.name == name);
+            Category cat = bdd.Category.FirstOrDefault(c => c.user_id == user_id && c.name == name);
             if (cat != null)
             {
-                bdd.category.Remove(cat);
+                bdd.Category.Remove(cat);
                 bdd.SaveChanges();
             }
         }
+        #endregion
 
-        public List<transaction> getTransactions ()
+        #region Transaction
+        public List<Transaction> getTransactions (TransacFilter filter)
         {
-            return bdd.transaction.ToList();
+            if(filter == TransacFilter.ALL)
+                return bdd.Transaction.ToList();
+            bool bool_filter = (filter == TransacFilter.VALIDATED) ? true : false;
+            return bdd.Transaction.Where(t => t.validated == bool_filter).ToList();
         }
 
-        public List<transaction> getTransactions(int account_id)
+        public List<Transaction> getTransactions(int Account_id, TransacFilter filter)
         {
-            return bdd.transaction.Where(t => t.id_account == account_id).ToList();
+            if (filter == TransacFilter.ALL)
+                return bdd.Transaction.Where(t => t.account_id == Account_id).ToList();
+            bool bool_filter = (filter == TransacFilter.VALIDATED) ? true : false;
+            return bdd.Transaction.Where(t => t.account_id == Account_id && t.validated == bool_filter).ToList();
         }
 
-        public List<transaction> getTransactions(int account_id, DateTime date)
+        public List<Transaction> getTransactions(int Account_id, DateTime date, TransacFilter filter)
         {
-            return bdd.transaction.Where(t => t.id_account == account_id && t.date >= date).ToList();
+            if(filter == TransacFilter.ALL)
+                return bdd.Transaction.Where(t => t.account_id == Account_id && t.date >= date).ToList();
+            bool bool_filter = (filter == TransacFilter.VALIDATED) ? true : false;
+            return bdd.Transaction.Where(t => t.account_id == Account_id && t.date >= date && t.validated == bool_filter).ToList();
         }
 
-        public List<transaction> getTransactions(int account_id, string name)
+        public List<Transaction> getTransactions(int Account_id, string name, TransacFilter filter)
         {
-            return bdd.transaction.Where(t => t.id_account == account_id && t.name.Contains(name)).ToList();
+            if (filter == TransacFilter.ALL)
+                return bdd.Transaction.Where(t => t.account_id == Account_id && t.name.Contains(name)).ToList();
+            bool bool_filter = (filter == TransacFilter.VALIDATED) ? true : false;
+            return bdd.Transaction.Where(t => t.account_id == Account_id && t.name.Contains(name) && t.validated == bool_filter).ToList();
         }
 
-        public List<transaction> getInvalidatedTransactions (int account_id)
+        public Transaction getTransaction(int id)
         {
-            return bdd.transaction.Where(t => t.id_account == account_id && t.validated == false).ToList();
+            return bdd.Transaction.FirstOrDefault(t => t.id == id);
         }
 
-        public List<transaction> getInvalidatedTransactions(int account_id, DateTime date_begin)
+        public Transaction addTransaction(int Account_id, string name, float value, bool validated, DateTime date)
         {
-            return bdd.transaction.Where(t => t.id_account == account_id && t.validated == false && t.date >= date_begin).ToList();
-        }
-
-        public List<transaction> getInvalidatedTransactions(int account_id, string name)
-        {
-            return bdd.transaction.Where(t => t.id_account == account_id && t.validated == false && t.name.Contains(name)).ToList();
-        }
-
-        public transaction getTransaction(int id)
-        {
-            return bdd.transaction.FirstOrDefault(t => t.id == id);
-        }
-
-        public transaction addTransaction(int account_id, string name, float value, bool validated, DateTime date)
-        {
-            transaction t = bdd.transaction.Add (new transaction { id_account = account_id, name = name, value = value, validated = validated, date = date });
+            Transaction t = bdd.Transaction.Add (new Transaction { account_id = Account_id, name = name, value = value, validated = validated, date = date });
             bdd.SaveChanges();
             return t;
         }
 
-        public transaction addTransaction(transaction t)
+        public Transaction addTransaction(Transaction t)
         {
-            transaction transac = bdd.transaction.Add(new transaction { id_account = t.id_account, name = t.name, value = t.value, validated = t.validated, date = t.date });
+            Transaction transac = bdd.Transaction.Add(new Transaction { account_id = t.account_id, name = t.name, value = t.value, validated = t.validated, date = t.date });
             bdd.SaveChanges();
             return transac;
         }
 
-        public transaction setTransaction(int transaction_id, int account_id, string name, float value, bool validated, DateTime date) {
-            transaction transac = bdd.transaction.FirstOrDefault(t => t.id == transaction_id);
+        public Transaction setTransaction(int Transaction_id, int Account_id, string name, float value, bool validated, DateTime date) {
+            Transaction transac = bdd.Transaction.FirstOrDefault(t => t.id == Transaction_id);
             if (transac != null)
             {
-                transac.id_account = account_id;
+                transac.account_id = Account_id;
                 transac.name = name;
                 transac.value = value;
                 transac.validated = validated;
@@ -305,22 +321,14 @@ namespace MyAccount.Models
 
         public void deleteTransaction(int id)
         {
-            transaction transac = bdd.transaction.FirstOrDefault(t => t.id == id);
+            Transaction transac = bdd.Transaction.FirstOrDefault(t => t.id == id);
             if (transac != null)
             {
-                bdd.transaction.Remove(transac);
+                bdd.Transaction.Remove(transac);
                 bdd.SaveChanges();
             }
         }
-
-        /*
-        void deleteTransaction(int id);
-         * */
-
-        public void Dispose()
-        {
-            bdd.Dispose();
-        }
+        #endregion
     }
 }
  

@@ -12,30 +12,34 @@ namespace MyAccount.Controllers
     {
 
         private IDal dal;
+        private User user;
 
         public HomeController ()
         {
             dal = new Dal();
+            user = Session["user"] as User;
         }
 
         /*
-         * Retrieves all user's accounts
-         * Retrieves all user's transactions from the begin of the month
+         * Retrieves all User's accounts
+         * Retrieves all User's transactions from the begin of the month
          */
         public ActionResult Index()
         {
-            user u = Session["user"] as user;
-            ViewBag.AccountsList = new SelectList(dal.getAccounts(u.id), "id", "name");
+            ViewBag.AccountsList = new SelectList(dal.getAccounts(user.id), "id", "name");
 
             DateTime current_date = DateTime.Now;
             DateTime begin_date = new DateTime(current_date.Year, current_date.Month, 1);
 
-            List<transaction> transactions = new List<transaction>();
-            foreach (var account in dal.getAccounts(u.id))
+            List<Transaction> transactions = new List<Transaction>();
+            List<Transaction> invalidated_transactions = new List<Transaction>();
+            foreach (var account in dal.getAccounts(user.id))
             {
-                transactions.AddRange(dal.getTransactions(account.id, begin_date));
+                transactions.AddRange(dal.getTransactions(account.id, begin_date, Dal.TransacFilter.VALIDATED));
+                transactions.AddRange(dal.getTransactions(account.id, begin_date, Dal.TransacFilter.INVALIDATED));
             }
             ViewBag.TransactionsList = transactions;
+            ViewBag.InvalidatedTransactionsList = invalidated_transactions;
 
             return View();
         }
@@ -43,13 +47,13 @@ namespace MyAccount.Controllers
         [HttpPost]
         public ActionResult Index(int account_id)
         {
-            user u = Session["user"] as user;
-            ViewBag.AccountsList = new SelectList(dal.getAccounts(u.id), "id", "name");
+            ViewBag.AccountsList = new SelectList(dal.getAccounts(user.id), "id", "name");
 
             DateTime current_date = DateTime.Now;
             DateTime begin_date = new DateTime(current_date.Year, current_date.Month, 1);
 
-            ViewBag.TransactionsList = dal.getTransactions(account_id, begin_date);
+            ViewBag.TransactionsList = dal.getTransactions(account_id, begin_date, Dal.TransacFilter.VALIDATED);
+            ViewBag.InvalidatedTransactionsList = dal.getTransactions(account_id, begin_date, Dal.TransacFilter.INVALIDATED);
 
             return View();
         }
