@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace MyAccount.Controllers
+namespace MyAccount.Areas.Authentication.Controllers
 {
     public class AccountController : Controller
     {
@@ -73,7 +73,8 @@ namespace MyAccount.Controllers
         public ActionResult Signout()
         {
             FormsAuthentication.SignOut();
-            return Redirect("/");
+            Session["user"] = null;
+            return Redirect("Login");
         }
     }
 }

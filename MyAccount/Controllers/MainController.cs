@@ -19,7 +19,7 @@ namespace MyAccount.Controllers
                 base.OnActionExecuting(filterContext);
             } else
             {
-                filterContext.Result = new RedirectResult("~/Account/Login");
+                filterContext.Result = new RedirectResult("~/Authentication/Account/Login");
             }
         }
     }
