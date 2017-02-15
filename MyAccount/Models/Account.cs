@@ -15,6 +15,7 @@ namespace MyAccount.Models
         [StringLength(255)]
         public string name { get; set; }
 
+        [Required]
         public float value { get; set; }
 
         public int? user_id { get; set; }

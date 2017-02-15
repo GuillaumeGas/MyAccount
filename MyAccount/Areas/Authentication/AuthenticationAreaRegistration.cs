@@ -17,7 +17,7 @@ namespace MyAccount.Areas.Authentication
             context.MapRoute(
                 "Authentication_default",
                 "Authentication/{controller}/{action}/{id}",
-                new { controller = "Account", action = "Login", id = UrlParameter.Optional },
+                new { controller = "Authentication", action = "Login", id = UrlParameter.Optional },
                 namespaces: new[] { "MyAccount.Areas.Authentication.Controllers" }
             );
         }

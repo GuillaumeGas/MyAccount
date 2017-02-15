@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Account";
+}
+
+<h2>Account</h2>
+
+<table align="center">
+    @using (Html.BeginForm())
+    {
+        <tr>
+            <td colspan="2">
+                @Html.ValidationMessage("error")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.TextBox("name")
+                @Html.ValidationMessage("name")
+            </td>
+            <td>
+                @Html.TextBox("value")
+                @Html.ValidationMessage("value")
+            </td>
+            <td>
+                <input type="submit" value="Add"/>
+            </td>
+        </tr>
+    }
+    @{
+        foreach (var account in ViewBag.AccountsList)
+        {
+            <tr>
+                <td>@account.name</td>
+                <td>@account.value</td>
+            </tr>
+        }
+    }
+</table>

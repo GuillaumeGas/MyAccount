@@ -9,17 +9,23 @@ namespace MyAccount.Controllers
 {
     public class MainController : Controller
     {
+        protected IDal dal;
         protected User user;
+
+        public MainController ()
+        {
+            dal = new Dal();
+        }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-                if (Session["user"] != null)
+            if (Session["user"] != null)
             {
                 user = Session["user"] as User;
                 base.OnActionExecuting(filterContext);
             } else
             {
-                filterContext.Result = new RedirectResult("~/Authentication/Account/Login");
+                filterContext.Result = new RedirectResult("~/Authentication/Authentication/Login");
             }
         }
     }

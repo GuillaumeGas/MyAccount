@@ -1,4 +1,4 @@
-﻿using MyAccount.Models;
+﻿    using MyAccount.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +8,12 @@ using System.Web.Security;
 
 namespace MyAccount.Areas.Authentication.Controllers
 {
-    public class AccountController : Controller
+    public class AuthenticationController : Controller
     {
 
         private IDal dal;
 
-        public AccountController()
+        public AuthenticationController()
         {
             dal = new Dal();
         }

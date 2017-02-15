@@ -11,13 +11,6 @@ namespace MyAccount.Controllers
     public class HomeController : MainController
     {
 
-        private IDal dal;
-       
-        public HomeController ()
-        {
-            dal = new Dal();
-        }
-
         /*
          * Retrieves all User's accounts
          * Retrieves all User's transactions from the begin of the month
