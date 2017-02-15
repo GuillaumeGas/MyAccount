@@ -27,7 +27,7 @@ namespace MyAccount.Controllers
             foreach (var account in dal.getAccounts(user.id))
             {
                 transactions.AddRange(dal.getTransactions(account.id, begin_date, Dal.TransacFilter.VALIDATED));
-                transactions.AddRange(dal.getTransactions(account.id, begin_date, Dal.TransacFilter.INVALIDATED));
+                invalidated_transactions.AddRange(dal.getTransactions(account.id, begin_date, Dal.TransacFilter.INVALIDATED));
             }
             ViewBag.TransactionsList = transactions;
             ViewBag.InvalidatedTransactionsList = invalidated_transactions;
