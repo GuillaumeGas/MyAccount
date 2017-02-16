@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace MyAccount.Controllers
 {
+    [Authorize]
     public class AccountController : MainController
     {
         public ActionResult Index()
